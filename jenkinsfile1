@@ -1,0 +1,20 @@
+pipeline{
+    agent any
+    stages{
+        stage('build'){
+            steps{
+                echo "build successfully..."
+            }
+        }
+        stage('test'){
+            steps{
+                script{
+                    def test = build job: 'downstream-test-job', propagate: true
+                    if(test.result == "SUCCESS"){
+                        echo "test job status: ${test.result}"
+                    }
+                }
+            }
+        }
+    }
+}
